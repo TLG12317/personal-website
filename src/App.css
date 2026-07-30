@@ -1,0 +1,50 @@
+html, body, #root {
+    background: #050508;
+    margin: 0;
+
+    overflow: hidden;
+}
+
+.intro-overlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+
+    opacity:1;
+
+    transition:
+        opacity 1.4s ease,
+        filter 1.4s ease;
+}
+
+.intro-overlay-out{
+    opacity:0;
+    filter:blur(12px);
+    pointer-events:none;
+}
+
+.app-content{
+
+    opacity:1;
+
+    transition:
+        opacity 1.6s ease,
+        transform 1.6s cubic-bezier(.22,1,.36,1);
+
+}
+
+.app-content.fade-in {
+    opacity: 0;
+    animation: appFade 1.6s ease forwards;
+}
+
+@keyframes appFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.app-content-visible{
+
+    opacity:1;
+
+}

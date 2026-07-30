@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
+
+.playpen-screen {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: #05070a;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 1.5rem;
+  overflow: hidden;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+/* ---------- CRT overlay effects ---------- */
+
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.035) 0px,
+    rgba(255, 255, 255, 0.035) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+.crt-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 2;
+}
+
+/* ---------- Terminal window ---------- */
+
+.playpen-terminal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(230, 230, 230, 0.25);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.04);
+}
+
+.terminal-titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.9rem;
+  border-bottom: 1px solid rgba(230, 230, 230, 0.25);
+  color: #e8e8e8;
+  font-family: 'VT323', monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+}
+
+.terminal-version {
+  color: rgba(230, 230, 230, 0.45);
+  font-size: 0.95rem;
+}
+
+.terminal-body {
+  padding: 1.25rem 1.4rem 1.6rem;
+  color: #e8e8e8;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.25);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  min-height: 220px;
+}
+
+.terminal-line {
+  white-space: pre-wrap;
+}
+
+.line-warn {
+  color: #ff3b3b;
+  text-shadow: 0 0 6px rgba(255, 59, 59, 0.55);
+}
+
+.line-fade-in {
+  animation: lineIn 0.35s ease-out both;
+}
+
+@keyframes lineIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+.terminal-exit {
+  display: block;
+  margin-top: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #e8e8e8;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  text-align: left;
+}
+
+.terminal-exit:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.terminal-exit:focus-visible {
+  outline: 1px solid rgba(230, 230, 230, 0.6);
+  outline-offset: 2px;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ---------- Signature glitch moment ---------- */
+
+.is-glitching {
+  animation: glitchShake 0.12s steps(2) infinite;
+}
+
+.is-glitching::before,
+.is-glitching::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+
+.is-glitching::before {
+  background: rgba(255, 59, 59, 0.1);
+  transform: translate(2px, 0);
+}
+
+.is-glitching::after {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translate(-2px, 0);
+}
+
+@keyframes glitchShake {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-1px, 1px); }
+  100% { transform: translate(1px, -1px); }
+}
+
+/* ---------- Side panels ---------- */
+
+.side-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1;
+  animation: lineIn 0.5s ease-out both;
+}
+
+.panel {
+  width: 220px;
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(230, 230, 230, 0.2);
+  padding: 0.8rem 1rem;
+  color: #e8e8e8;
+  font-size: 0.85rem;
+}
+
+.panel-title {
+  font-family: 'VT323', monospace;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  color: rgba(230, 230, 230, 0.85);
+  border-bottom: 1px solid rgba(230, 230, 230, 0.18);
+  padding-bottom: 0.35rem;
+}
+
+.panel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.locked-tag {
+  color: rgba(255, 59, 59, 0.75);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.checkbox {
+  margin-right: 0.5rem;
+}
+
+.checkbox.checked {
+  color: #e8e8e8;
+}
+
+.feature-done {
+  color: rgba(230, 230, 230, 0.5);
+  text-decoration: line-through;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 720px) {
+  .playpen-screen {
+    flex-direction: column;
+  }
+
+  .side-panels {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
