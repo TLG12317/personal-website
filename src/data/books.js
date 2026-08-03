@@ -5,29 +5,13 @@
 export const books = [
   {
     slug: "winter-memories",
-    title: "Winter Memories",
-    subtitle: "A story beneath the snow.",
+    title: "No books so far sucker",
+    subtitle: "SO SAD huehuehuehuehue",
     cover: "../assets/frankenthal.png",
-    status: "ongoing",
+    status: "dead",
     chapters: [
-      { number: 1, title: "The First Snow" },
-      { number: 2, title: "Library" },
-    ],
-  },
-  {
-    slug: "white-sky",
-    title: "White Sky",
-    subtitle: "Coming soon.",
-    status: "upcoming",
-    chapters: [],
-  },
-  {
-    slug: "another-book",
-    title: "Another Book",
-    subtitle: "A quiet place to begin.",
-    status: "ongoing",
-    chapters: [
-      { number: 1, title: "Prologue" },
+      { number: 1, title: "THERE IS NO BOOK" },
+      { number: 2, title: "THERE IS NO BOOK 2: ELECTRIC BOOGALOO" },
     ],
   },
 ];

@@ -104,13 +104,12 @@ export default function Books() {
           </p>
 
           <h1>
-            Stories &
+            Books here
             <br />
-            Worlds
           </h1>
 
           <p>
-            Scroll to explore each story.
+            Scroll to read
           </p>
 
         </div>

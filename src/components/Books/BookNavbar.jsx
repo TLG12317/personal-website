@@ -17,8 +17,8 @@ export default function BookNavbar() {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/gallery">Gallery</NavLink>
         <NavLink to="/projects">Projects</NavLink>
-        <NavLink to="/books">Books</NavLink>
         <NavLink to="/contact">Contact</NavLink>
+        <NavLink to="/books">Books</NavLink>
         <NavLink to="/playpen">Playpen</NavLink>
       </nav>
     </header>
