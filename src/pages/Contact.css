@@ -1,0 +1,538 @@
+/* Contact.css */
+
+:root {
+  --ember-black: #0a0403;
+  --ember-void: #150605;
+  --ember-deep: #3d0f08;
+  --ember-mid: #8c2a12;
+  --ember-bright: #ff6a2f;
+  --ember-glow: #ff9466;
+  --ember-cream: #ffe8d9;
+  --ember-label: #ffb385;
+  --ember-error: #ff6a6a;
+
+  --paper-clip: polygon(
+    2% 0%, 9% 3%, 16% 0%, 24% 4%, 33% 1%, 42% 5%, 51% 0%, 60% 3%, 69% 0%, 78% 4%, 87% 1%, 100% 5%,
+    97% 14%, 100% 24%, 96% 33%, 100% 43%, 97% 52%, 100% 62%, 96% 71%, 100% 81%, 97% 91%, 100% 100%,
+    91% 98%, 82% 100%, 73% 97%, 64% 100%, 55% 98%, 46% 100%, 37% 97%, 28% 100%, 19% 98%, 10% 100%, 0% 97%,
+    3% 88%, 0% 79%, 4% 70%, 0% 61%, 3% 52%, 0% 43%, 4% 34%, 0% 25%, 3% 16%, 0% 7%
+  );
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.hero-with-form {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--ember-black);
+  font-family: inherit;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 4, 3, 0.85) 0%, rgba(10, 4, 3, 0.15) 22%, rgba(10, 4, 3, 0.35) 70%, rgba(10, 4, 3, 0.9) 100%),
+    radial-gradient(120% 90% at 50% 50%, rgba(10, 4, 3, 0) 30%, rgba(10, 4, 3, 0.55) 100%);
+}
+
+/* ---------- Nav ---------- */
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 2.5rem;
+  background: linear-gradient(180deg, rgba(10, 4, 3, 0.65), rgba(10, 4, 3, 0));
+  backdrop-filter: blur(4px);
+}
+
+.site-nav__brand {
+  font-size: 0.95rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ember-glow);
+  text-decoration: none;
+  text-shadow: 0 0 12px rgba(255, 90, 30, 0.45);
+}
+
+.site-nav__links {
+  display: flex;
+  gap: 2.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__links a {
+  position: relative;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ember-cream);
+  opacity: 0.75;
+  text-decoration: none;
+  padding-bottom: 0.35rem;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.site-nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 1px;
+  background: var(--ember-bright);
+  box-shadow: 0 0 8px rgba(255, 90, 30, 0.7);
+  transition: right 0.25s ease;
+}
+
+.site-nav__links a:hover,
+.site-nav__links a:focus-visible {
+  opacity: 1;
+  color: var(--ember-glow);
+  outline: none;
+}
+
+.site-nav__links a:hover::after,
+.site-nav__links a:focus-visible::after,
+.site-nav__links a.is-active::after {
+  right: 0;
+}
+
+.site-nav__links a.is-active {
+  opacity: 1;
+  color: var(--ember-glow);
+}
+
+@media (max-width: 640px) {
+  .site-nav {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .site-nav__links {
+    gap: 1.1rem;
+  }
+
+  .site-nav__links a {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+/* ---------- Form (torn paper) ---------- */
+
+.contact-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+
+  clip-path: var(--paper-clip);
+  transform: translate(-50%, -50%) rotate(-1.1deg);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), inset 0 0 50px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+/* the paper itself: background + padding + content live here rather than
+   on .contact-form, because this is the element that gets the eroding
+   mask-image during burning. It stays in normal flow (this is what gives
+   .contact-form its height — it has no other in-flow content). The flame
+   canvas is a separate, absolutely-positioned sibling on top of it, so it
+   stays fully visible above/through the area this mask has eaten away —
+   otherwise the flame would get clipped away exactly where it needs to
+   be seen. */
+.contact-form__paper-content {
+  position: relative;
+  width: 100%;
+  padding: 2.6rem 2.4rem;
+  color: var(--ember-cream);
+  font-family: inherit;
+  box-sizing: border-box;
+  text-align: center;
+
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.025) 0px, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 3px),
+    radial-gradient(120% 80% at 20% 10%, rgba(255, 120, 60, 0.1), transparent 60%),
+    radial-gradient(100% 100% at 85% 95%, rgba(0, 0, 0, 0.55), transparent 70%),
+    linear-gradient(160deg, #2c130b 0%, #1c0906 60%, #130603 100%);
+}
+
+.contact-form__fields {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.contact-form__fields:disabled {
+  opacity: 0.85;
+}
+
+
+.contact-form__eyebrow {
+  margin: 0 0 0.6rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ember-label);
+  opacity: 0.85;
+}
+
+.contact-form h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--ember-glow);
+  text-shadow: 0 0 12px rgba(255, 90, 30, 0.5);
+}
+
+.contact-form__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0.9rem auto 1rem;
+  width: 70%;
+  color: var(--ember-mid);
+}
+
+.contact-form__divider span {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 90, 50, 0.35);
+}
+
+.contact-form__divider i {
+  font-style: normal;
+  font-size: 0.7rem;
+  color: var(--ember-bright);
+}
+
+.contact-form__lead {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--ember-label);
+}
+
+.contact-form label {
+  display: block;
+  text-align: left;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  margin: 1.1rem 0 0.4rem;
+  color: var(--ember-label);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background: rgba(20, 6, 4, 0.45);
+  border: 1px solid rgba(255, 90, 50, 0.35);
+  border-radius: 3px;
+  color: var(--ember-cream);
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--ember-bright);
+  box-shadow: 0 0 10px rgba(255, 90, 30, 0.6);
+}
+
+.contact-form button {
+  margin-top: 1.6rem;
+  padding: 0.65rem 1.6rem;
+  background: linear-gradient(180deg, var(--ember-bright), var(--ember-deep));
+  border: none;
+  border-radius: 4px;
+  color: #fff2e8;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.contact-form button:hover {
+  box-shadow: 0 0 16px rgba(255, 90, 30, 0.7);
+  transform: translateY(-1px);
+}
+
+.contact-form__fields:disabled button {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-note {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.form-note.error {
+  color: var(--ember-error);
+}
+
+/* sending: a slow dark-red pulse while we wait on Formspree */
+.contact-form.is-sending {
+  animation: sendGlow 1.1s ease-in-out infinite;
+}
+
+@keyframes sendGlow {
+  0%, 100% {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), inset 0 0 50px rgba(0, 0, 0, 0.4), inset 0 0 40px rgba(140, 20, 10, 0);
+  }
+  50% {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), inset 0 0 50px rgba(0, 0, 0, 0.4), inset 0 0 55px rgba(140, 20, 10, 0.55);
+  }
+}
+
+/* burning: the fire is a real WebGL shader (GLSL simplex-noise flame,
+   see FireCanvas in Contact.jsx) rather than any hand-authored shape.
+   The paper's own disappearance is driven by sampling that same shader's
+   live brightness per column each frame, so the eroded edge inherits the
+   shader's actual turbulence instead of a fixed set of offsets. Paper
+   burns from the bottom up here, matching the shader's own fixed
+   "fuel at the bottom" design, rather than fighting it with a top-down
+   remap. This class just disables interaction while that's happening;
+   the final flash-and-vanish is a short, fixed-duration capstone
+   independent of how long the simulation actually took.
+   .contact-form__paper-content gets the live mask-image; .contact-form
+   itself (and the flame canvas, its sibling) are untouched by it. */
+.contact-form.is-burning {
+  pointer-events: none;
+}
+
+.contact-form.is-burnout {
+  animation: burnOutFlash 0.32s ease-in forwards;
+}
+
+@keyframes burnOutFlash {
+  0% {
+    filter: brightness(1);
+    opacity: 1;
+  }
+  45% {
+    filter: brightness(1.7);
+    opacity: 0.85;
+  }
+  100% {
+    filter: brightness(1.9);
+    opacity: 0;
+  }
+}
+
+/* the flame band — a fixed-height container that Contact.jsx slides down
+   the paper each frame (via inline `top`) to track the average burn
+   front. It's a sibling of .contact-form__paper-content (not a child),
+   so the paper-content's eroding mask never clips it away — otherwise
+   the flame would vanish exactly where it needs to be seen, right above
+   the disappearing paper. */
+.flame-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* the flame canvas — a WebGL surface running the actual GLSL shader,
+   filling its travelling band. Scaled up from a modest internal render
+   resolution, softened with blur, screen-blended so it glows rather than
+   occludes. */
+.flame-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: blur(1.5px) brightness(1.15) saturate(1.1);
+  mix-blend-mode: screen;
+}
+
+/* ---------- Embers ---------- */
+
+.embers {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ember {
+  position: absolute;
+  bottom: 6%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ember-glow);
+  box-shadow: 0 0 6px 2px rgba(255, 122, 61, 0.85);
+  opacity: 0;
+}
+
+.ember:nth-child(odd) { --drift: 10px; }
+.ember:nth-child(even) { --drift: -10px; }
+
+.ember:nth-child(1) { left: 6%; animation-delay: 0s; }
+.ember:nth-child(2) { left: 16%; animation-delay: 0.12s; }
+.ember:nth-child(3) { left: 26%; animation-delay: 0.05s; }
+.ember:nth-child(4) { left: 38%; animation-delay: 0.25s; }
+.ember:nth-child(5) { left: 50%; animation-delay: 0.08s; }
+.ember:nth-child(6) { left: 62%; animation-delay: 0.3s; }
+.ember:nth-child(7) { left: 74%; animation-delay: 0.15s; }
+.ember:nth-child(8) { left: 84%; animation-delay: 0.22s; }
+.ember:nth-child(9) { left: 92%; animation-delay: 0.02s; }
+.ember:nth-child(10) { left: 44%; animation-delay: 0.4s; }
+.ember:nth-child(11) { left: 30%; animation-delay: 0.5s; }
+.ember:nth-child(12) { left: 68%; animation-delay: 0.6s; }
+
+.embers--burn .ember {
+  animation-name: emberBurstUp;
+  animation-duration: 1.4s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+
+@keyframes emberBurstUp {
+  0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.6); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-160px) translateX(var(--drift, 0)) scale(0.25); }
+}
+
+.embers--ambient .ember {
+  animation-name: emberFloat;
+  animation-duration: 4.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes emberFloat {
+  0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.5); }
+  12% { opacity: 0.9; }
+  100% { opacity: 0; transform: translateY(-220px) translateX(var(--drift, 0)) scale(0.2); }
+}
+
+/* ---------- Ashes / success panel ---------- */
+
+.ash-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  text-align: center;
+  color: var(--ember-cream);
+  animation: ashFadeIn 1.1s ease-out 0.2s both;
+}
+
+@keyframes ashFadeIn {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.ash-panel h2 {
+  margin: 0.6rem 0;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ember-glow);
+  text-shadow: 0 0 12px rgba(255, 90, 30, 0.5);
+}
+
+.ash-panel p {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  color: var(--ember-label);
+  font-style: italic;
+}
+
+.ash-panel__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0 auto;
+  width: 50%;
+  color: var(--ember-mid);
+}
+
+.ash-panel__divider span {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 90, 50, 0.35);
+}
+
+.ash-panel__divider i {
+  font-style: normal;
+  font-size: 0.7rem;
+  color: var(--ember-bright);
+}
+
+.ash-panel__reset {
+  margin-top: 1.4rem;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--ember-label);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.ash-panel__reset:hover {
+  opacity: 1;
+  color: var(--ember-glow);
+}
+
+@media (max-width: 600px) {
+  .contact-form {
+    max-width: 90%;
+    padding: 2.2rem 1.6rem;
+  }
+
+  .ash-panel {
+    max-width: 90%;
+  }
+}

@@ -634,6 +634,12 @@
   overflow: visible;
 }
 
+.petal-nav-logo {
+  height: 48px;   /* adjust to taste */
+  width: auto;
+  display: block;
+}
+
 .petal-nav-brand {
   position: relative;
   z-index: 1;

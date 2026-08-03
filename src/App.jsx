@@ -8,7 +8,9 @@ import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
-import Book from "./pages/Book";
+import Books from "./pages/Books";
+import BookPage from "./pages/BookPage";
+import Chapter from "./pages/Chapter";
 import Playpen from "./pages/Playpen";
 
 export default function App() {
@@ -31,7 +33,9 @@ export default function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/book" element={<Book />} />
+            <Route path="/books" element={<Books />} />
+            <Route path="/books/:slug" element={<BookPage />} />
+            <Route path="/books/:slug/:chapterId" element={<Chapter />} />
             <Route path="/playpen" element={<Playpen />} />
             </Route>
         </Routes>

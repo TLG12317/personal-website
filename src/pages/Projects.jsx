@@ -5,11 +5,13 @@ import "./Projects.css";
 import GhostSpirit from "../components/Projects/GhostSpirit";
 import FishSpirit from "../components/Projects/FishSpirit";
 import home_page_shot from "../assets/home_page_shot.png"
+import frankenthal from "../assets/frankenthal.png";
 import idle from "../assets/idle.png";
 import hurt from "../assets/hurt.png";
 import excited from "../assets/excited.png";
 import smug from "../assets/smug.png";
 import thinking from "../assets/thinking.png";
+import zelkova from "../assets/zelkova_heavy.png";
 
 import happy1 from "../assets/happy1.png";
 import happy2 from "../assets/happy2.png";
@@ -43,7 +45,7 @@ const BOOT_LINES = ["drifting through the fog...", "you realise you are here", "
 const NAV_LINKS = [
   { label: "HOME", path: "/" }, { label: "PROJECTS", path: "/projects" },
   { label: "GALLERY", path: "/gallery" }, { label: "CONTACT", path: "/contact" },
-  { label: "BOOK", path: "/book" }, { label: "PLAYPEN", path: "/playpen" },
+  { label: "BOOKS", path: "/books" }, { label: "PLAYPEN", path: "/playpen" },
 ];
 
 const NAV_DIALOGUE = {
@@ -238,6 +240,8 @@ const speak = ({ moveTo, coords, mood, text }) => {
 
   return (
     <main className={`archive ${booted ? "archive--booted" : ""}`}>
+      <img src={zelkova} className="archive__bg" alt="" aria-hidden="true" />
+      <div className="archive__scrim" aria-hidden="true" />
       <div className="archive__glow" aria-hidden="true" />
       <div className="archive__mist" aria-hidden="true" />
       <div className="archive__particles" aria-hidden="true" />
@@ -283,15 +287,19 @@ const speak = ({ moveTo, coords, mood, text }) => {
       </nav>
 
       <header className="archive__header">
-        <div className="archive__boot" aria-hidden={booted}>
-          {BOOT_LINES.map((line, i) => (
-            <span key={line} className="archive__boot-line" style={{ animationDelay: `${i * 0.32}s` }}>
-              {line}
-            </span>
-          ))}
+        <div className="archive__brand">
+          <div className="archive__brand-text">
+            <h1 className="archive__title">
+              NIGHT GARDEN
+              <span className="archive__cursor">_</span>
+            </h1>
+
+            <p className="archive__subtitle">
+              {PROJECTS.length} things grown here — touch one to look closer
+            </p>
+          </div>
+
         </div>
-        <h1 className="archive__title">NIGHT GARDEN<span className="archive__cursor" aria-hidden="true">_</span></h1>
-        <p className="archive__subtitle">{PROJECTS.length} things grown here — touch one to look closer</p>
       </header>
 
       <section className="archive__grid">

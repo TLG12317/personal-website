@@ -9,7 +9,7 @@ const links = [
     { label: "PROJECTS", path: "/projects" },
     { label: "GALLERY", path: "/gallery" },
     { label: "CONTACT", path: "/contact" },
-    { label: "BOOK", path: "/book" },
+    { label: "BOOKS", path: "/books" },
     { label: "PLAYPEN", path: "/playpen" },
 ];
 

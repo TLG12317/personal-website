@@ -7,6 +7,7 @@ import Navbar from "../components/Home/Navbar";
 import Stars from "../components/Home/Stars";
 import Rain from "../components/Home/Rain";
 import SigrunaTitle from "../components/Home/SigrunaTitle";
+import frankenthal from "../assets/frankenthal.png";
 
 const STAR_COUNT = 30;
 const RAIN_COUNT = 30;
@@ -51,6 +52,12 @@ export default function Home({ introFading }) {
     return (
 
         <main className="home">
+
+            <img
+                src={frankenthal}
+                alt="Sigruna"
+                className="home-logo"
+            />
 
             <Navbar /> 
 
@@ -99,10 +106,10 @@ export default function Home({ introFading }) {
 
         <div
             className="book-hotspot"
-            onClick={() => navigate("/book")}
+            onClick={() => navigate("/books")}
         >
             <FloatingLabel
-                text="BOOK"
+                text="BOOKS"
                 className="floating-label"
             />
         </div>

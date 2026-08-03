@@ -16,6 +16,34 @@
   position: relative;
   height: 100vh;
   width: 100%;
+  background: var(--void); /* fallback while the image loads / if it fails */
+  color: var(--text);
+  font-family: "IBM Plex Mono", monospace;
+  padding: 64px 48px 96px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* the actual background photo (zelkova) — fixed behind everything else */
+.archive__bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* the page's original atmospheric gradient, now layered on top of the
+   photo as a translucent scrim instead of being the background itself —
+   keeps the emerald/dreampunk mood while letting the image read through */
+.archive__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background: radial-gradient(
       ellipse 55% 40% at 18% 8%,
       var(--glow-a),
@@ -27,13 +55,7 @@
       rgba(20, 60, 46, 0.55),
       transparent 70%
     ),
-    linear-gradient(180deg, #03110c 0%, #071a14 45%, #0a2419 100%);
-  color: var(--text);
-  font-family: "IBM Plex Mono", monospace;
-  padding: 64px 48px 96px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+    linear-gradient(180deg, rgba(3, 17, 12, 0.72) 0%, rgba(7, 26, 20, 0.6) 45%, rgba(10, 36, 25, 0.75) 100%);
 }
 
 /* ambient glow, drifting mist, and faint particle field */
@@ -780,4 +802,40 @@
 .npc-container.hurt .npc-speech-bubble::after {
   border-right-color: var(--red);
   border-bottom-color: var(--red);
+}
+.archive__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.archive__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.archive__logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  flex-shrink: 0;
+
+  border-radius: 6px;
+
+  opacity: 0.92;
+
+  filter:
+    drop-shadow(0 0 8px rgba(125,255,201,.22));
+
+  transition:
+    transform .3s ease,
+    filter .3s ease,
+    opacity .3s ease;
+}
+
+.archive__logo:hover {
+  transform: rotate(-4deg) scale(1.08);
+
+  filter:
+    drop-shadow(0 0 14px rgba(125,255,201,.45));
 }

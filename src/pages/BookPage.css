@@ -1,0 +1,446 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;600&display=swap");
+
+:root{
+
+    --bp-bg:#070707;
+    --bp-white:#f5f5f2;
+    --bp-grey:#b6b6b6;
+    --bp-line:rgba(255,255,255,.08);
+    --bp-accent:#d7d7d7;
+
+    --bp-display:"Cormorant Garamond",serif;
+    --bp-body:"Manrope",sans-serif;
+
+}
+
+.bp-page{
+
+    
+    position:relative;
+
+    z-index:2;
+    background:var(--bp-bg);
+    color:var(--bp-white);
+    font-family:var(--bp-body);
+
+}
+
+/* ======================================
+   HERO
+====================================== */
+
+.bp-hero{
+
+    position:relative;
+
+    height:100vh;
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    overflow:hidden;
+
+}
+
+/* Blur image behind */
+
+.bp-hero::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:inherit;
+
+    background-size:cover;
+    background-position:center;
+
+    filter:blur(14px);
+
+    transform:scale(1.12);
+
+    z-index:0;
+
+}
+
+/* Overlay */
+
+.bp-hero::after{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,.15),
+            rgba(0,0,0,.55),
+            rgba(0,0,0,.93)
+        );
+
+}
+
+.bp-overlay{
+
+    position:relative;
+
+    z-index:2;
+
+    width:min(1200px,90%);
+
+    margin:0 auto;
+
+    min-height:100vh;
+
+    display:flex;
+    align-items:flex-end;
+
+    padding-top:120px;      /* space for navbar */
+    padding-bottom:10vh;
+
+}
+
+.bp-back{
+
+    position:fixed;
+
+    top:100px;
+    left:5vw;
+
+    z-index:9999;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:.9rem;
+
+    letter-spacing:.15em;
+
+    text-transform:uppercase;
+
+    transition:opacity .3s;
+
+}
+
+.bp-back:hover{
+
+    opacity:.6;
+
+}
+
+
+.bp-hero-content{
+
+    max-width:700px;
+
+}
+
+.bp-status{
+
+    text-transform:uppercase;
+
+    letter-spacing:.35em;
+
+    color:#999;
+
+    margin-bottom:24px;
+
+    font-size:.8rem;
+
+}
+
+.bp-hero h1{
+
+    font-family:var(--bp-display);
+
+    font-size:clamp(4rem,7vw,6.5rem);
+
+    line-height:.9;
+
+    margin:0;
+
+    font-weight:500;
+
+}
+
+.bp-quote{
+
+    margin-top:30px;
+
+    color:#d8d8d8;
+
+    font-style:italic;
+
+    font-size:1.15rem;
+
+    line-height:1.7;
+
+}
+
+.bp-meta{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-top:42px;
+
+    color:#9f9f9f;
+
+    font-size:.9rem;
+
+    letter-spacing:.05em;
+
+}
+
+.bp-scroll{
+
+    margin-top:70px;
+
+    color:#888;
+
+    letter-spacing:.35em;
+
+    text-transform:uppercase;
+
+    font-size:.75rem;
+
+}
+
+/* ======================================
+   ABOUT
+====================================== */
+
+.bp-info{
+
+    width:min(900px,90%);
+
+    margin:140px auto;
+
+    padding-top:60px;
+
+}
+
+.bp-info h2{
+
+    font-family:var(--bp-display);
+
+    font-size:2.6rem;
+
+    font-weight:500;
+
+    margin-bottom:40px;
+
+}
+
+.bp-description p{
+
+    color:#cfcfcf;
+
+    line-height:2.1;
+
+    font-size:1.05rem;
+
+    max-width:720px;
+
+}
+
+.bp-info,
+.bp-chapters{
+
+    position:relative;
+
+    z-index:10;
+
+}
+
+/* ======================================
+   CHAPTERS
+====================================== */
+
+.bp-chapters{
+
+    position:relative;
+
+    z-index:5;
+
+    width:min(1100px,92%);
+
+    margin:160px auto 0;
+
+    padding:120px 0 180px;
+
+    background:#070707;
+
+}
+
+.bp-chapters h2{
+
+    font-family:var(--bp-display);
+
+    font-size:3rem;
+
+    font-weight:500;
+
+    margin-bottom:70px;
+
+}
+
+/* ======================================
+   SINGLE CHAPTER
+====================================== */
+
+.bp-chapter{
+
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:90px 1fr auto;
+
+    align-items:center;
+
+    gap:40px;
+
+    padding:34px 0;
+
+    text-decoration:none;
+
+    color:white;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    transition:
+        transform .35s ease,
+        border-color .35s ease;
+
+}
+
+.bp-chapter:last-child{
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.bp-number{
+
+    font-family:var(--bp-display);
+
+    font-size:1.2rem;
+
+    color:#777;
+
+    transition:.35s;
+
+}
+
+.bp-title{
+
+    font-size:1.15rem;
+
+    letter-spacing:.02em;
+
+    transition:
+        transform .35s ease,
+        color .35s ease;
+
+}
+
+.bp-arrow{
+
+    opacity:0;
+
+    transform:translateX(-14px);
+
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+
+}
+
+/* ======================================
+   HOVER
+====================================== */
+
+.bp-chapter:hover{
+
+    border-color:rgba(255,255,255,.22);
+
+}
+
+.bp-chapter:hover .bp-title{
+
+    transform:translateX(14px);
+
+    color:#ffffff;
+
+}
+
+.bp-chapter:hover .bp-number{
+
+    color:#d8d8d8;
+
+}
+
+.bp-chapter:hover .bp-arrow{
+
+    opacity:1;
+
+    transform:translateX(0);
+
+}
+
+/* faint line animation */
+
+.bp-chapter::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:90px;
+
+    bottom:-1px;
+
+    width:0;
+
+    height:1px;
+
+    background:white;
+
+    transition:width .45s ease;
+
+}
+
+.bp-chapter:hover::after{
+
+    width:calc(100% - 90px);
+
+}
+
+/* ======================================
+   EMPTY STATE
+====================================== */
+
+.bp-empty{
+
+    border:1px solid rgba(255,255,255,.08);
+
+    padding:80px;
+
+    text-align:center;
+
+    color:#888;
+
+    font-size:1rem;
+
+    line-height:1.8;
+
+}

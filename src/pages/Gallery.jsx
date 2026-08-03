@@ -4,13 +4,15 @@ import "./Gallery.css";
 import test from "../assets/test.png"
 import gallery from "../assets/gallery.png"
 import home_page_shot from "../assets/home_page_shot.png"
+import frankenthal from "../assets/frankenthal.png"
+import frankenthal_act from "../assets/frankenthal_act.png"
 
 //art
 const ARTWORKS = [
   { id: 1, title: "Banga Ho", year: 2026, medium: "banana-painting", description: "test", image: test, featured: true },
   { id: 2, title: "Gallery", year: 2026, medium: "banana oil", description: "it hella pink", image: gallery, featured: true },
   { id: 3, title: "Home Page", year: 2026, medium: "testicular torsionistic", description: "home page i think", image: home_page_shot, featured: true },
-  { id: 4, title: "", year: 2026, medium: "", description: "", image: null },
+  { id: 4, title: "Frankenthal", year: 2026, medium: "noooo", description: "sword", image: frankenthal_act },
   { id: 5, title: "", year: 2026, medium: "", description: "", image: null },
   { id: 6, title: "", year: 2026, medium: "", description: "", image: null },
   { id: 7, title: "", year: 2026, medium: "", description: "", image: null },
@@ -91,7 +93,7 @@ const PETAL_NAV_LINKS = [
   { label: "Projects", to: "/projects" },
   { label: "Gallery", to: "/gallery" },
   { label: "Contact", to: "/contact" },
-  { label: "Book", to: "/book" },
+  { label: "Books", to: "/books" },
   { label: "Playpen", to: "/playpen" },
 ];
 
@@ -99,7 +101,13 @@ function PetalNavbar() {
   return (
     <nav className="petal-nav">
       <FallingPetals count={8} variant="nav" />
-      <NavLink to="/" className="petal-nav-brand">Sigruna</NavLink>
+      <NavLink to="/" className="petal-nav-brand">
+        <img
+          src={frankenthal}
+          alt="Sigruna"
+          className="petal-nav-logo"
+        />
+      </NavLink>
       <ul className="petal-nav-list">
         {PETAL_NAV_LINKS.map((link, i) => (
           <li key={link.href} className="petal-nav-item" style={{ "--sway-delay": `${i * 0.4}s` }}>
