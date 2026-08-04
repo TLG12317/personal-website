@@ -1,6 +1,5 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { books } from "../data/books";
 import BookNavbar from "../components/Books/BookNavbar";
 import "./Books.css";
 
@@ -43,15 +42,24 @@ function BookCard({ book, index }) {
       to={`/books/${book.slug}`}
       className="book-slide"
       style={{
-        backgroundImage: `
-          linear-gradient(
-            to top,
-            rgba(0,0,0,.88) 0%,
-            rgba(0,0,0,.55) 45%,
-            rgba(0,0,0,.20) 100%
-          ),
-          url(${book.cover})
-        `,
+        backgroundImage: book.cover
+          ? `
+            linear-gradient(
+              to top,
+              rgba(0,0,0,.88) 0%,
+              rgba(0,0,0,.55) 45%,
+              rgba(0,0,0,.20) 100%
+            ),
+            url(${book.cover})
+          `
+          : `
+            linear-gradient(
+              to top,
+              rgba(0,0,0,.88) 0%,
+              rgba(0,0,0,.55) 45%,
+              rgba(0,0,0,.20) 100%
+            )
+          `,
       }}
     >
       <div className="book-content">
@@ -88,6 +96,15 @@ function BookCard({ book, index }) {
 }
 
 export default function Books() {
+  const [books, setBooks] = useState([]);
+  
+  useEffect(() => {
+    fetch("http://localhost:5000/books")
+      .then((res) => res.json())
+      .then((data) => setBooks(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <div className="books-page">
 

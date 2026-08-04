@@ -1,15 +1,45 @@
 import { Link, useParams } from "react-router-dom";
-import { getBook, chapterSlug } from "../data/books";
+import { useEffect, useState } from "react";
+import { chapterSlug } from "../data/books";
 
 import BookNavbar from "../components/Books/BookNavbar";
 
 import "./BookPage.css";
 
 export default function BookPage() {
-
     const { slug } = useParams();
 
-    const book = getBook(slug);
+    const [book, setBook] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/books/${slug}`)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("Book not found");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                setBook(data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setBook(null);
+                setLoading(false);
+            });
+    }, [slug]);
+
+    if (loading) {
+        return (
+            <div className="bp-page">
+                <BookNavbar />
+                <div className="bp-not-found">
+                    <h1>Loading...</h1>
+                </div>
+            </div>
+        );
+    }
 
     if (!book) {
 
@@ -155,9 +185,8 @@ export default function BookPage() {
                             key={chapter.number}
 
                             className="bp-chapter"
-
-                            to={`/books/${book.slug}/${chapterSlug(chapter.number)}`}
-
+                            
+                            to={`/books/${book.slug}/${chapter.slug}`}
                         >
 
                             <span className="bp-number">

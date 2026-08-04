@@ -3,6 +3,8 @@
     top: 0;
     left: 0;
 
+    width: 100%;
+
     box-sizing: border-box;
     height: 72px;
 
@@ -10,11 +12,13 @@
     justify-content: space-between;
     align-items: center;
 
+    padding: 0 40px;   
 
-    background: rgba(8, 10, 18, .78);
-    backdrop-filter: blur(16px);
+    background: transparent;
 
-    border-bottom: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: none;
+
+    border-bottom: none;
 
     z-index: 1000;
 }
@@ -100,6 +104,7 @@
     height: 34px;
     width: auto;
     display: block;
+    margin-left: 24px;
     margin-right: 24px;
     object-fit: contain;
 

@@ -215,6 +215,66 @@
 }
 
 /* ======================================
+   NOT FOUND / LOADING
+====================================== */
+
+.bp-not-found{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:28px;
+
+    text-align:center;
+
+    padding:120px 24px 0;
+
+}
+
+.bp-not-found h1{
+
+    font-family:var(--bp-display);
+
+    font-size:clamp(2.2rem,5vw,3.2rem);
+
+    font-weight:500;
+
+    margin:0;
+
+    color:var(--bp-white);
+
+}
+
+.bp-not-found a{
+
+    color:var(--bp-grey);
+
+    text-decoration:none;
+
+    font-size:.9rem;
+
+    letter-spacing:.15em;
+
+    text-transform:uppercase;
+
+    transition:color .3s ease;
+
+}
+
+.bp-not-found a:hover{
+
+    color:var(--bp-accent);
+
+}
+
+/* ======================================
    ABOUT
 ====================================== */
 
