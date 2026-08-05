@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { chapterSlug } from "../data/books";
+import { getBook } from "../api/books";
 
 import BookNavbar from "../components/Books/BookNavbar";
 
@@ -13,13 +13,7 @@ export default function BookPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/books/${slug}`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error("Book not found");
-                }
-                return res.json();
-            })
+        getBook(slug)
             .then((data) => {
                 setBook(data);
                 setLoading(false);

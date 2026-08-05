@@ -70,9 +70,11 @@ function BookCard({ book, index }) {
 
         <div className="book-text">
 
-          <p className="book-small">
-            {book.chapters.length} Chapters
-          </p>
+        <p className="book-small">
+            {book.chapter_count} Chapters •{" "}
+            {book.story_status.charAt(0).toUpperCase() +
+                book.story_status.slice(1)}
+        </p>
 
           <h2>{book.title}</h2>
 

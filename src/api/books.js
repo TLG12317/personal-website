@@ -1,0 +1,43 @@
+const API = "http://localhost:5000";
+
+export async function getBooks() {
+    const res = await fetch(`${API}/books`);
+
+    if (!res.ok) {
+        throw new Error("Failed to load books");
+    }
+
+    return res.json();
+}
+
+export async function getBook(slug) {
+    const res = await fetch(`${API}/books/${slug}`);
+
+    if (!res.ok) {
+        throw new Error("Book not found");
+    }
+
+    return res.json();
+}
+
+export async function getChapter(bookSlug, chapterSlug) {
+    const res = await fetch(
+        `${API}/books/${bookSlug}/chapters/${chapterSlug}`
+    );
+
+    if (!res.ok) {
+        throw new Error("Chapter not found");
+    }
+
+    return res.json();
+}
+
+export async function getAdminBook(id) {
+    const res = await fetch(`http://localhost:5000/admin/books/${id}`);
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch book");
+    }
+
+    return res.json();
+}

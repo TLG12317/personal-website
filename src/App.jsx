@@ -4,6 +4,9 @@ import "./App.css";
 
 import Intro from "./components/Intro";
 
+import Login from "./pages/Login";
+import Admin from "./pages/Admin";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Gallery from "./pages/Gallery";
@@ -12,6 +15,7 @@ import Books from "./pages/Books";
 import BookPage from "./pages/BookPage";
 import Chapter from "./pages/Chapter";
 import Playpen from "./pages/Playpen";
+import AdminBook from "./pages/admin/AdminBook";
 
 export default function App() {
   const location = useLocation();
@@ -30,6 +34,16 @@ export default function App() {
                 path="/"
                 element={<Home introFading={introFading} />}
             />
+            <Route path="/login" element={<Login />} />
+            <Route
+                path="/admin"
+                element={
+                    <ProtectedRoute>
+                        <Admin />
+                    </ProtectedRoute>
+                }
+            />
+            <Route path="/admin/books/:id" element={<AdminBook />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
