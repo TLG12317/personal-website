@@ -16,7 +16,7 @@ import BookPage from "./pages/BookPage";
 import Chapter from "./pages/Chapter";
 import Playpen from "./pages/Playpen";
 import AdminBook from "./pages/admin/AdminBook";
-import AdminChapter from "./pages/Admin/AdminChapter";
+import AdminChapter from "./pages/admin/AdminChapter";
 
 export default function App() {
   const location = useLocation();
