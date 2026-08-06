@@ -1,4 +1,4 @@
-const API = "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export async function getBooks() {
     const res = await fetch(`${API}/books`);
@@ -33,7 +33,7 @@ export async function getChapter(bookSlug, chapterSlug) {
 }
 
 export async function getAdminBook(id) {
-    const res = await fetch(`http://localhost:5000/admin/books/${id}`);
+    const res = await fetch(`${API}/admin/books/${id}`);
 
     if (!res.ok) {
         throw new Error("Failed to fetch book");
