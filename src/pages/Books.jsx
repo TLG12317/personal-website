@@ -1,6 +1,8 @@
 import { useMemo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BookNavbar from "../components/Books/BookNavbar";
+import { getBooks } from "../api/books";
+
 import "./Books.css";
 
 function Snowfall({ count = 40 }) {
@@ -101,10 +103,9 @@ export default function Books() {
   const [books, setBooks] = useState([]);
   
   useEffect(() => {
-    fetch("http://localhost:5000/books")
-      .then((res) => res.json())
-      .then((data) => setBooks(data))
-      .catch((err) => console.error(err));
+      getBooks()
+          .then((data) => setBooks(data))
+          .catch((err) => console.error(err));
   }, []);
 
   return (
