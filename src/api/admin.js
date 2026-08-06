@@ -114,3 +114,89 @@ export async function updateAdminBook(id, book){
 
     return data;
 }
+
+export async function getBookChapters(id) {
+
+    const res = await fetch(
+        `${API}/admin/books/${id}/chapters`
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        throw new Error(data.error || JSON.stringify(data));
+    }
+
+    return data;
+
+}
+
+export async function createChapter(bookId, chapter) {
+
+    const res = await fetch(
+        `${API}/admin/books/${bookId}/chapters`,
+        {
+            method: "POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(chapter)
+        }
+    );
+
+
+    const data = await res.json();
+
+
+    if (!res.ok) {
+        throw new Error(data.message || JSON.stringify(data));
+    }
+
+
+    return data;
+
+}
+
+export async function getAdminChapter(id){
+
+    const res = await fetch(
+        `${API}/admin/chapters/${id}`
+    );
+
+    const data = await res.json();
+
+    if(!res.ok){
+        throw new Error(data.error);
+    }
+
+    return data;
+
+}
+
+
+
+export async function updateChapter(id,chapter){
+
+    const res = await fetch(
+        `${API}/admin/chapters/${id}`,
+        {
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(chapter)
+        }
+    );
+
+
+    const data = await res.json();
+
+
+    if(!res.ok){
+        throw new Error(data.error);
+    }
+
+
+    return data;
+
+}

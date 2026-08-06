@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import BookNavbar from "../components/Books/BookNavbar";
 import { getBooks } from "../api/books";
@@ -17,6 +17,8 @@ function Snowfall({ count = 40 }) {
       drift: `${(Math.random() - 0.5) * 80}px`,
     }));
   }, [count]);
+
+
 
   return (
     <div className="books-snow" aria-hidden="true">
@@ -44,24 +46,15 @@ function BookCard({ book, index }) {
       to={`/books/${book.slug}`}
       className="book-slide"
       style={{
-        backgroundImage: book.cover
-          ? `
+        backgroundImage: `
             linear-gradient(
-              to top,
-              rgba(0,0,0,.88) 0%,
-              rgba(0,0,0,.55) 45%,
-              rgba(0,0,0,.20) 100%
+                to top,
+                rgba(0,0,0,.88) 0%,
+                rgba(0,0,0,.55) 45%,
+                rgba(0,0,0,.20) 100%
             ),
-            url(${book.cover})
-          `
-          : `
-            linear-gradient(
-              to top,
-              rgba(0,0,0,.88) 0%,
-              rgba(0,0,0,.55) 45%,
-              rgba(0,0,0,.20) 100%
-            )
-          `,
+            url(${book.cover || "/covers/default.jpg"})
+        `,
       }}
     >
       <div className="book-content">
@@ -101,12 +94,85 @@ function BookCard({ book, index }) {
 
 export default function Books() {
   const [books, setBooks] = useState([]);
+  const [activeBook, setActiveBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const wrapperRef = useRef(null);
+
+  const publishedBooks = books.filter(
+    (book) => book.publish_status === "published"
+);
+
+  const scrollToBook = (slug) => {
+    const wrapper = wrapperRef.current;
+    const section = document.getElementById(`book-${slug}`);
+
+    if (!wrapper || !section) return;
+
+    wrapper.scrollTo({
+        top: section.offsetTop,
+        behavior: "smooth",
+    });
+  };  
   
   useEffect(() => {
       getBooks()
           .then((data) => setBooks(data))
-          .catch((err) => console.error(err));
+          .catch((err) => console.error(err))
+          .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+
+        const wrapper = wrapperRef.current;
+        if (!wrapper) return;
+
+        const observer = new IntersectionObserver(
+
+            (entries) => {
+
+                entries.forEach((entry) => {
+
+                    if (entry.isIntersecting) {
+
+                        setActiveBook(
+                            entry.target.id.replace("book-", "")
+                        );
+
+                    }
+
+                });
+
+            },
+
+            {
+                root: wrapper,
+                threshold: 0.6,
+            }
+
+        );
+
+        const sections = wrapper.querySelectorAll(".book-section");
+
+        sections.forEach(section => observer.observe(section));
+
+        return () => observer.disconnect();
+
+    }, [publishedBooks]);
+
+
+  if (loading) {
+    return (
+        <div className="books-page books-loading">
+            <BookNavbar />
+            <Snowfall />
+
+            <div className="books-loading-text">
+                Loading library...
+            </div>
+        </div>
+    );
+  } 
 
   return (
     <div className="books-page">
@@ -115,7 +181,10 @@ export default function Books() {
 
       <Snowfall />
 
-      <section className="books-wrapper">
+      <section
+          className="books-wrapper"
+          ref={wrapperRef}
+      >
 
         <div className="books-intro">
 
@@ -134,16 +203,62 @@ export default function Books() {
 
         </div>
 
-        {books.map((book, index) => (
-          <BookCard
+        {publishedBooks.length === 0 ? (
+
+            <div className="books-empty">
+                <h2>No books yet</h2>
+                <p>Stories will appear here soon.</p>
+            </div>
+
+        ) : (
+
+            publishedBooks.map((book, index) => (
+          <section
             key={book.slug}
-            book={book}
-            index={index}
-          />
-        ))}
+            id={`book-${book.slug}`}
+            className="book-section"
+          >
+            <BookCard
+              book={book}
+              index={index}
+            />
+          </section>
+            ))
+      )}
 
       </section>
 
+      {/* Floating Library Navigator */}
+      <nav className="library-nav">
+
+        <div className="library-title">
+          Library
+        </div>
+
+        {publishedBooks.map((book, index) => (
+        <button
+            key={book.slug}
+            onClick={() => scrollToBook(book.slug)}
+            className={
+                activeBook === book.slug
+                    ? "library-link active"
+                    : "library-link"
+            }
+        >
+            <span className="library-number">
+              {(index + 1).toString().padStart(2, "0")}
+            </span>
+
+            <span className="library-name">
+              {book.title}
+            </span>
+          </button>
+        ))}
+
+      </nav>
+
     </div>
   );
+
+  
 }

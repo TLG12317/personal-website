@@ -16,6 +16,7 @@ import BookPage from "./pages/BookPage";
 import Chapter from "./pages/Chapter";
 import Playpen from "./pages/Playpen";
 import AdminBook from "./pages/admin/AdminBook";
+import AdminChapter from "./pages/Admin/AdminChapter";
 
 export default function App() {
   const location = useLocation();
@@ -42,6 +43,10 @@ export default function App() {
                         <Admin />
                     </ProtectedRoute>
                 }
+            />
+            <Route
+                path="/admin/chapters/:id"
+                element={<AdminChapter />}
             />
             <Route path="/admin/books/:id" element={<AdminBook />} />
             <Route path="/projects" element={<Projects />} />

@@ -107,20 +107,6 @@ body{
 
 }
 
-/* Hide scrollbar */
-
-.books-wrapper::-webkit-scrollbar{
-
-    display:none;
-
-}
-
-.books-wrapper{
-
-    scrollbar-width:none;
-
-}
-
 /* ===========================
    INTRO
 =========================== */
@@ -645,4 +631,205 @@ body{
 
     }
 
+}
+
+/* ===========================
+   LIBRARY NAVIGATOR
+=========================== */
+
+.library-nav {
+
+    position: fixed;
+
+    left: 28px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 240px;
+
+    z-index: 50;
+
+    background: rgba(8,8,8,.65);
+
+    backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+}
+
+.library-title{
+
+    font-size:.7rem;
+
+    letter-spacing:.3em;
+
+    text-transform:uppercase;
+
+    color:#888;
+
+    margin-bottom:18px;
+
+}
+
+.library-link{
+
+    display:flex;
+
+    gap:14px;
+
+    align-items:center;
+
+    padding:9px 0;
+
+    text-decoration:none;
+
+    color:#999;
+
+    transition:.25s;
+
+}
+
+.library-link:hover{
+
+    color:white;
+
+    transform:translateX(6px);
+
+}
+
+.library-number{
+
+    width:28px;
+
+    font-family:var(--display);
+
+    color:#666;
+
+}
+
+.library-name{
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    font-size:.9rem;
+
+}
+
+@media (max-width:1100px){
+
+    .library-nav{
+
+        left:16px;
+
+        width:170px;
+
+    }
+
+    .library-name{
+
+        display:none;
+
+    }
+
+}
+
+.book-section{
+
+    scroll-margin-top:0;
+
+}
+
+.library-link{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    width:100%;
+
+    background:none;
+
+    border:none;
+
+    color:#999;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    padding:9px 0;
+
+    font:inherit;
+
+    transition:.25s;
+
+}
+
+.library-link.active{
+
+    color:white;
+
+    transform:translateX(10px);
+
+}
+
+.library-link.active .library-number{
+
+    color:white;
+
+}
+
+.library-link.active::before{
+
+    content:"";
+
+    width:3px;
+
+    height:22px;
+
+    background:var(--accent);
+
+    border-radius:999px;
+
+    margin-right:10px;
+
+}
+
+.books-loading {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.books-loading-text {
+    color: white;
+    font-size: 1.3rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.books-empty {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.books-empty h2 {
+    margin-bottom: 0.75rem;
 }

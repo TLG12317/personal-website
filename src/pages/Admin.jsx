@@ -8,6 +8,17 @@ import {
 } from "../api/admin";
 import "./Admin.css";
 
+function createSlug(text) {
+
+    return text
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+
+}
+
 export default function Admin() {
 
     const [books, setBooks] = useState([]);
@@ -16,6 +27,7 @@ export default function Admin() {
 
     const [showModal, setShowModal] = useState(false);
     const [editingBook, setEditingBook] = useState(null);
+    const [message, setMessage] = useState("");
 
     const [newBook, setNewBook] = useState({
         title: "",
@@ -31,13 +43,26 @@ export default function Admin() {
         getBooks().then(setBooks);
     }, []);
 
+    function showMessage(text) {
+
+        setMessage(text);
+
+        setTimeout(() => {
+            setMessage("");
+        }, 3000);
+
+}
+
     async function handleSaveBook() {
 
         try {
 
             if (editingBook) {
 
-                const updated = await updateBook(editingBook.id, newBook);
+                const updated = await updateBook(editingBook.id, {
+                    ...newBook,
+                    slug: createSlug(newBook.title)
+                });
 
                 setBooks(current =>
                     current.map(book =>
@@ -47,7 +72,10 @@ export default function Admin() {
 
             } else {
 
-                const created = await createBook(newBook);
+                const created = await createBook({
+                    ...newBook,
+                    slug: createSlug(newBook.title)
+                });
 
                 setBooks(current => [...current, created]);
 
@@ -59,15 +87,22 @@ export default function Admin() {
                 subtitle: "",
                 description: "",
                 cover: "",
-                status: "draft",
+                publish_status: "draft",
+                story_status: "ongoing",
             });
 
-            setEditingBook(null);
-            setShowModal(false);
+                setEditingBook(null);
+                setShowModal(false);
+
+                showMessage(
+                    editingBook
+                        ? "Book updated successfully"
+                        : "Book created successfully"
+                );
 
         } catch (err) {
 
-            alert(err.message);
+            showMessage(err.message);
 
         }
 
@@ -91,10 +126,12 @@ export default function Admin() {
             setBooks(current =>
                 current.filter(book => book.id !== id)
             );
+            
+            showMessage("Book deleted successfully");
 
         } catch (err) {
 
-            alert(err.message);
+            showMessage(err.message);
 
         }
 
@@ -103,6 +140,12 @@ export default function Admin() {
     return (
 
         <div className="admin-page">
+
+            {message && (
+                <div className="toast">
+                    {message}
+                </div>
+            )}
 
             <div className="admin-shell">
 
@@ -132,7 +175,8 @@ export default function Admin() {
                                 subtitle: "",
                                 description: "",
                                 cover: "",
-                                status: "draft",
+                                publish_status: "draft",
+                                story_status: "ongoing",
                             });
 
                             setShowModal(true);
@@ -198,9 +242,6 @@ export default function Admin() {
                                 Edit
                             </button>
 
-                                <button className="admin-btn">
-                                    Chapters
-                                </button>
 
                                 <button
                                     className="admin-btn admin-delete"
@@ -233,23 +274,17 @@ export default function Admin() {
                         <input
                             placeholder="Title"
                             value={newBook.title}
-                            onChange={(e) =>
-                                setNewBook({
-                                    ...newBook,
-                                    title: e.target.value,
-                                })
-                            }
-                        />
+                            onChange={(e) => {
 
-                        <input
-                            placeholder="Slug"
-                            value={newBook.slug}
-                            onChange={(e) =>
+                                const title = e.target.value;
+
                                 setNewBook({
                                     ...newBook,
-                                    slug: e.target.value,
-                                })
-                            }
+                                    title,
+                                    slug: createSlug(title),
+                                });
+
+                            }}
                         />
 
                         <input
