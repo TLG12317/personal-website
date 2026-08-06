@@ -22,21 +22,11 @@ export async function getBook(slug) {
 
 export async function getChapter(bookSlug, chapterSlug) {
     const res = await fetch(
-        `${API}/books/${bookSlug}/chapters/${chapterSlug}`
+        `${API}/books/${bookSlug}/${chapterSlug}`
     );
 
     if (!res.ok) {
         throw new Error("Chapter not found");
-    }
-
-    return res.json();
-}
-
-export async function getAdminBook(id) {
-    const res = await fetch(`${API}/admin/books/${id}`);
-
-    if (!res.ok) {
-        throw new Error("Failed to fetch book");
     }
 
     return res.json();
