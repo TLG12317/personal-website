@@ -1,8 +1,6 @@
 const API =
     import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-console.log("API =", API);
-
 export async function getBooks() {
     const res = await fetch(`${API}/books`);
 

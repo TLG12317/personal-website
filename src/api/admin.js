@@ -12,19 +12,29 @@ async function authHeaders() {
 
 }
 
+async function handleResponse(res) {
+    if (res.status === 401) {
+        await supabase.auth.signOut();
+        window.location.replace("/admin/login");
+        return;
+    }
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        throw new Error(data.message || JSON.stringify(data));
+    }
+
+    return data;
+}
+
 export async function getBooks() {
 
     const res = await fetch(`${API}/admin/books`, {
         headers: await authHeaders()
     });
 
-    if (!res.ok) {
-        const error = await res.json();
-        console.log(error);
-        throw new Error(JSON.stringify(error));
-    }
-
-    return res.json();
+    return handleResponse(res);
 
 }
 
@@ -34,13 +44,7 @@ export async function getAdminBook(id) {
         headers: await authHeaders()
     });
 
-    if (!res.ok) {
-        const error = await res.json();
-        console.log(error);
-        throw new Error(error.message || JSON.stringify(error));
-    }
-
-    return res.json();
+    return handleResponse(res);
 
 }
 
@@ -59,14 +63,7 @@ export async function createBook(book) {
 
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-        console.log(data);
-        throw new Error(data.message || JSON.stringify(data));
-    }
-
-    return data;
+    return handleResponse(res);
 
 }
 
@@ -85,13 +82,7 @@ export async function updateBook(id, book) {
 
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-        throw new Error(data.message || JSON.stringify(data));
-    }
-
-    return data;
+    return handleResponse(res);
 
 }
 
@@ -102,13 +93,7 @@ export async function deleteBook(id) {
         headers: await authHeaders()
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-        throw new Error(data.message || JSON.stringify(data));
-    }
-
-    return data;
+    return handleResponse(res);
 
 }
 
@@ -126,13 +111,8 @@ export async function updateAdminBook(id, book){
         }
     );
 
-    const data = await res.json();
+    return handleResponse(res);
 
-    if (!res.ok) {
-        throw new Error(data.message || JSON.stringify(data));
-    }
-
-    return data;
 }
 
 export async function getBookChapters(bookId) {
@@ -141,13 +121,7 @@ export async function getBookChapters(bookId) {
         headers: await authHeaders()
     });
 
-    if (!res.ok) {
-        const error = await res.json();
-        console.log(error);
-        throw new Error(error.message || JSON.stringify(error));
-    }
-
-    return res.json();
+    return handleResponse(res);
 
 }
 
@@ -166,13 +140,7 @@ export async function createChapter(bookId, chapter) {
 
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-        throw new Error(data.message || JSON.stringify(data));
-    }
-
-    return data;
+    return handleResponse(res);
 
 }
 
@@ -182,13 +150,7 @@ export async function getAdminChapter(id) {
         headers: await authHeaders()
     });
 
-    if (!res.ok) {
-        const error = await res.json();
-        console.log(error);
-        throw new Error(error.message || JSON.stringify(error));
-    }
-
-    return res.json();
+    return handleResponse(res);
 
 }
 
@@ -207,12 +169,6 @@ export async function updateChapter(id, chapter) {
 
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-        throw new Error(data.message || JSON.stringify(data));
-    }
-
-    return data;
+    return handleResponse(res);
 
 }

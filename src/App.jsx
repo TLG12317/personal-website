@@ -47,10 +47,22 @@ export default function App() {
                 }
             />
             <Route
-                path="/admin/chapters/:id"
-                element={<AdminChapter />}
+              path="/admin/books/:id"
+              element={
+                <ProtectedRoute>
+                  <AdminBook />
+                </ProtectedRoute>
+              }
             />
-            <Route path="/admin/books/:id" element={<AdminBook />} />
+
+            <Route
+              path="/admin/chapters/:id"
+              element={
+                <ProtectedRoute>
+                  <AdminChapter />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/projects" element={<Projects />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
