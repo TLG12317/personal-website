@@ -92,9 +92,21 @@ export default function Chapter() {
 
     }
 
-    const index = book.chapters.findIndex(c => c.slug === chapter.slug);
-    const prev = book.chapters[index - 1];
-    const next = book.chapters[index + 1];
+    const chapters = book.chapters ?? [];
+
+    const index = chapters.findIndex(c => c.slug === chapter.slug);
+
+    if (index === -1) {
+        return (
+            <div className="chapter-error">
+                <h2>Chapter not found</h2>
+                <p>This chapter may not be published yet or does not exist.</p>
+            </div>
+        );
+    }
+
+    const prev = chapters[index - 1] ?? null;
+    const next = chapters[index + 1] ?? null;
 
     return (
 

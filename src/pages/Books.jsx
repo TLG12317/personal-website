@@ -63,7 +63,7 @@ function BookCard({ book, index }) {
         <div className="book-text">
 
           <p className="book-small">
-            {book.chapters.length} Chapters
+            {book.chapter_count} Chapters
           </p>
 
           <h2>{book.title}</h2>

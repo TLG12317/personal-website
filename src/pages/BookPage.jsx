@@ -120,7 +120,7 @@ export default function BookPage() {
                         <div className="bp-meta">
 
                             <span>
-                                {book.chapters.length} Chapters
+                                {book.chapters_count} Chapters
                             </span>
 
                             <span>•</span>
@@ -168,7 +168,7 @@ export default function BookPage() {
 
                 <h2>Contents</h2>
 
-                {book.chapters.length === 0 ? (
+                {book.chapter === 0 ? (
 
                     <div className="bp-empty">
 
