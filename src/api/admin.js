@@ -1,8 +1,23 @@
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+import { supabase } from "../supabase";
+
+const API = "http://localhost:5000";
+
+async function authHeaders() {
+
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+
+    return token
+        ? { Authorization: `Bearer ${token}` }
+        : {};
+
+}
 
 export async function getBooks() {
 
-    const res = await fetch(`${API}/admin/books`);
+    const res = await fetch(`${API}/admin/books`, {
+        headers: await authHeaders()
+    });
 
     if (!res.ok) {
         const error = await res.json();
@@ -16,7 +31,9 @@ export async function getBooks() {
 
 export async function getAdminBook(id) {
 
-    const res = await fetch(`${API}/admin/books/${id}`);
+    const res = await fetch(`${API}/admin/books/${id}`, {
+        headers: await authHeaders()
+    });
 
     if (!res.ok) {
         const error = await res.json();
@@ -35,7 +52,8 @@ export async function createBook(book) {
         method: "POST",
 
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            ...(await authHeaders())
         },
 
         body: JSON.stringify(book)
@@ -60,7 +78,8 @@ export async function updateBook(id, book) {
         method: "PUT",
 
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            ...(await authHeaders())
         },
 
         body: JSON.stringify(book)
@@ -80,7 +99,8 @@ export async function updateBook(id, book) {
 export async function deleteBook(id) {
 
     const res = await fetch(`${API}/books/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: await authHeaders()
     });
 
     const data = await res.json();
@@ -100,7 +120,8 @@ export async function updateAdminBook(id, book){
         {
             method:"PUT",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                ...(await authHeaders())
             },
             body:JSON.stringify(book)
         }
@@ -115,87 +136,83 @@ export async function updateAdminBook(id, book){
     return data;
 }
 
-export async function getBookChapters(id) {
+export async function getBookChapters(bookId) {
 
-    const res = await fetch(
-        `${API}/admin/books/${id}/chapters`
-    );
-
-    const data = await res.json();
+    const res = await fetch(`${API}/admin/books/${bookId}/chapters`, {
+        headers: await authHeaders()
+    });
 
     if (!res.ok) {
-        throw new Error(data.error || JSON.stringify(data));
+        const error = await res.json();
+        console.log(error);
+        throw new Error(error.message || JSON.stringify(error));
     }
 
-    return data;
+    return res.json();
 
 }
 
 export async function createChapter(bookId, chapter) {
 
-    const res = await fetch(
-        `${API}/admin/books/${bookId}/chapters`,
-        {
-            method: "POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify(chapter)
-        }
-    );
+    const res = await fetch(`${API}/admin/books/${bookId}/chapters`, {
 
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json",
+            ...(await authHeaders())
+        },
+
+        body: JSON.stringify(chapter)
+
+    });
 
     const data = await res.json();
-
 
     if (!res.ok) {
         throw new Error(data.message || JSON.stringify(data));
     }
 
-
     return data;
 
 }
 
-export async function getAdminChapter(id){
+export async function getAdminChapter(id) {
 
-    const res = await fetch(
-        `${API}/admin/chapters/${id}`
-    );
+    const res = await fetch(`${API}/admin/chapters/${id}`, {
+        headers: await authHeaders()
+    });
 
-    const data = await res.json();
-
-    if(!res.ok){
-        throw new Error(data.error);
+    if (!res.ok) {
+        const error = await res.json();
+        console.log(error);
+        throw new Error(error.message || JSON.stringify(error));
     }
 
-    return data;
+    return res.json();
 
 }
 
+export async function updateChapter(id, chapter) {
 
+    const res = await fetch(`${API}/admin/chapters/${id}`, {
 
-export async function updateChapter(id,chapter){
+        method: "PUT",
 
-    const res = await fetch(
-        `${API}/admin/chapters/${id}`,
-        {
-            method:"PUT",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify(chapter)
-        }
-    );
+        headers: {
+            "Content-Type": "application/json",
+            ...(await authHeaders())
+        },
 
+        body: JSON.stringify(chapter)
+
+    });
 
     const data = await res.json();
 
-
-    if(!res.ok){
-        throw new Error(data.error);
+    if (!res.ok) {
+        throw new Error(data.message || JSON.stringify(data));
     }
-
 
     return data;
 

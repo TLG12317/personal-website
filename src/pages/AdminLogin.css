@@ -1,0 +1,113 @@
+.admin-login-page{
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#181818;
+
+    color:white;
+
+}
+
+.admin-login-card{
+
+    width:min(380px,90vw);
+
+    background:#242424;
+
+    border:1px solid #333;
+
+    border-radius:16px;
+
+    padding:40px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.admin-login-card h1{
+
+    margin:0 0 10px;
+
+    font-size:26px;
+
+}
+
+.admin-login-card label{
+
+    font-size:13px;
+
+    color:#999;
+
+}
+
+.admin-login-card input{
+
+    background:#181818;
+
+    border:1px solid #333;
+
+    color:white;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+}
+
+.admin-login-card button{
+
+    margin-top:10px;
+
+    border:none;
+
+    background:#69b06b;
+
+    color:white;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.admin-login-card button:hover{
+
+    filter:brightness(1.1);
+
+}
+
+.admin-login-card button:disabled{
+
+    opacity:.6;
+
+    cursor:default;
+
+}
+
+.admin-login-error{
+
+    color:#e08787;
+
+    font-size:14px;
+
+    margin:0;
+
+}

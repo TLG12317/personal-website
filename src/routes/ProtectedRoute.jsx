@@ -21,7 +21,7 @@ export default function ProtectedRoute({ children }) {
         return <p>Loading...</p>;
 
     if (!session)
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/admin/login" replace />;
 
     return children;
 }

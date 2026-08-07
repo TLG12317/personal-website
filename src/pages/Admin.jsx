@@ -6,18 +6,8 @@ import {
     updateBook,
     deleteBook
 } from "../api/admin";
+import { supabase } from "../supabase";
 import "./Admin.css";
-
-function createSlug(text) {
-
-    return text
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-");
-
-}
 
 export default function Admin() {
 
@@ -27,7 +17,6 @@ export default function Admin() {
 
     const [showModal, setShowModal] = useState(false);
     const [editingBook, setEditingBook] = useState(null);
-    const [message, setMessage] = useState("");
 
     const [newBook, setNewBook] = useState({
         title: "",
@@ -43,26 +32,13 @@ export default function Admin() {
         getBooks().then(setBooks);
     }, []);
 
-    function showMessage(text) {
-
-        setMessage(text);
-
-        setTimeout(() => {
-            setMessage("");
-        }, 3000);
-
-}
-
     async function handleSaveBook() {
 
         try {
 
             if (editingBook) {
 
-                const updated = await updateBook(editingBook.id, {
-                    ...newBook,
-                    slug: createSlug(newBook.title)
-                });
+                const updated = await updateBook(editingBook.id, newBook);
 
                 setBooks(current =>
                     current.map(book =>
@@ -72,10 +48,7 @@ export default function Admin() {
 
             } else {
 
-                const created = await createBook({
-                    ...newBook,
-                    slug: createSlug(newBook.title)
-                });
+                const created = await createBook(newBook);
 
                 setBooks(current => [...current, created]);
 
@@ -87,22 +60,15 @@ export default function Admin() {
                 subtitle: "",
                 description: "",
                 cover: "",
-                publish_status: "draft",
-                story_status: "ongoing",
+                status: "draft",
             });
 
-                setEditingBook(null);
-                setShowModal(false);
-
-                showMessage(
-                    editingBook
-                        ? "Book updated successfully"
-                        : "Book created successfully"
-                );
+            setEditingBook(null);
+            setShowModal(false);
 
         } catch (err) {
 
-            showMessage(err.message);
+            alert(err.message);
 
         }
 
@@ -126,12 +92,10 @@ export default function Admin() {
             setBooks(current =>
                 current.filter(book => book.id !== id)
             );
-            
-            showMessage("Book deleted successfully");
 
         } catch (err) {
 
-            showMessage(err.message);
+            alert(err.message);
 
         }
 
@@ -140,12 +104,6 @@ export default function Admin() {
     return (
 
         <div className="admin-page">
-
-            {message && (
-                <div className="toast">
-                    {message}
-                </div>
-            )}
 
             <div className="admin-shell">
 
@@ -163,28 +121,41 @@ export default function Admin() {
 
                     </div>
 
-                    <button
-                        className="admin-create"
-                        onClick={() => {
+                    <div className="admin-header-actions">
 
-                            setEditingBook(null);
+                        <button
+                            className="admin-create"
+                            onClick={() => {
 
-                            setNewBook({
-                                title: "",
-                                slug: "",
-                                subtitle: "",
-                                description: "",
-                                cover: "",
-                                publish_status: "draft",
-                                story_status: "ongoing",
-                            });
+                                setEditingBook(null);
 
-                            setShowModal(true);
+                                setNewBook({
+                                    title: "",
+                                    slug: "",
+                                    subtitle: "",
+                                    description: "",
+                                    cover: "",
+                                    status: "draft",
+                                });
 
-                        }}
-                    >
-                        + New Book
-                    </button>
+                                setShowModal(true);
+
+                            }}
+                        >
+                            + New Book
+                        </button>
+
+                        <button
+                            className="admin-btn"
+                            onClick={async () => {
+                                await supabase.auth.signOut();
+                                navigate("/admin/login");
+                            }}
+                        >
+                            Log Out
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -242,6 +213,9 @@ export default function Admin() {
                                 Edit
                             </button>
 
+                                <button className="admin-btn">
+                                    Chapters
+                                </button>
 
                                 <button
                                     className="admin-btn admin-delete"
@@ -274,17 +248,23 @@ export default function Admin() {
                         <input
                             placeholder="Title"
                             value={newBook.title}
-                            onChange={(e) => {
-
-                                const title = e.target.value;
-
+                            onChange={(e) =>
                                 setNewBook({
                                     ...newBook,
-                                    title,
-                                    slug: createSlug(title),
-                                });
+                                    title: e.target.value,
+                                })
+                            }
+                        />
 
-                            }}
+                        <input
+                            placeholder="Slug"
+                            value={newBook.slug}
+                            onChange={(e) =>
+                                setNewBook({
+                                    ...newBook,
+                                    slug: e.target.value,
+                                })
+                            }
                         />
 
                         <input
