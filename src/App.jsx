@@ -17,6 +17,7 @@ import Chapter from "./pages/Chapter";
 import Playpen from "./pages/Playpen";
 import AdminBook from "./pages/admin/AdminBook";
 import AdminChapter from "./pages/admin/AdminChapter";
+import AdminLogin from "./pages/AdminLogin"; 
 
 export default function App() {
   const location = useLocation();
@@ -30,6 +31,7 @@ export default function App() {
       {/* Only mount the routes after the intro is gone */}
         <div className={`app-content ${introFading ? "app-content-visible" : ""}`}>
         <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route>
             <Route
                 path="/"
