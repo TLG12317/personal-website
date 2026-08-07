@@ -135,13 +135,24 @@ export default function Chapter() {
 
                 <div className="ch-body">
 
-                    {chapter.content ? (
+                    {chapter.content && chapter.content.length > 0 ? (
 
-                        chapter.content
-                            .split("\n\n")
-                            .map((paragraph, i) => (
-                                <p key={i}>{paragraph}</p>
-                            ))
+                        chapter.content.map((block, i) => {
+                            if (block.type === "paragraph") {
+                                return <p key={i}>{block.value}</p>;
+                            }
+                            if (block.type === "image") {
+                                return (
+                                    <img
+                                        key={i}
+                                        src={block.src}
+                                        alt={block.alt || ""}
+                                        className="ch-image"
+                                    />
+                                );
+                            }
+                            return null;
+                        })
 
                     ) : (
 
