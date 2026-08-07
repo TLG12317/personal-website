@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getChapter } from "../api/books";
+import { API_URL } from "../config";
 
 import BookNavbar from "../components/Books/BookNavbar";
 
@@ -9,22 +9,28 @@ import "./Chapter.css";
 export default function Chapter() {
     const { slug, chapterId } = useParams();
 
-    const [chapterData, setChapterData] = useState(null);
+    const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-      setLoading(true);
+    useEffect(() => {
+        setLoading(true);
 
-      getChapter(slug, chapterId)
-          .then((data) => {
-              setChapterData(data);
-              setLoading(false);
-          })
-          .catch(() => {
-              setChapterData(null);
-              setLoading(false);
-          });
-  }, [slug, chapterId]);
+        fetch(`${API_URL}/books/${slug}`)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("Book not found");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                setBook(data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setBook(null);
+                setLoading(false);
+            });
+    }, [slug]);
 
     if (loading) {
 
@@ -46,17 +52,31 @@ export default function Chapter() {
 
     }
 
-    if (!chapterData) {
+    const chapter = book?.chapters?.find(c => c.slug === chapterId);
+
+    if (!book || !chapter) {
+
         return (
+
             <div className="ch-page">
 
                 <BookNavbar />
 
                 <div className="ch-shell">
 
-                    <Link to="/books" className="ch-back">
-                        ← Library
-                    </Link>
+                    {book ? (
+
+                        <Link to={`/books/${book.slug}`} className="ch-back">
+                            ← {book.title}
+                        </Link>
+
+                    ) : (
+
+                        <Link to="/books" className="ch-back">
+                            ← Library
+                        </Link>
+
+                    )}
 
                     <h1 className="ch-title">Not found.</h1>
 
@@ -67,18 +87,16 @@ export default function Chapter() {
                 </div>
 
             </div>
+
         );
+
     }
 
-    const {
-        chapter,
-        book,
-        previous,
-        next
-    } = chapterData;
+    const index = book.chapters.findIndex(c => c.slug === chapter.slug);
+    const prev = book.chapters[index - 1];
+    const next = book.chapters[index + 1];
 
     return (
-        
 
         <div className="ch-page">
 
@@ -110,54 +128,25 @@ export default function Chapter() {
                 </p>
 
                 <h1 className="ch-title">
-                  {chapter.title}
-                </h1>
 
-                {chapter.cover && (
-                  <img
-                    className="ch-cover"
-                    src={chapter.cover}
-                    alt={chapter.title}
-                  />
-                )}
+                    {chapter.title}
+
+                </h1>
 
                 <div className="ch-body">
 
-                    {chapter.content?.length ? (
+                    {chapter.content ? (
 
-                        chapter.content.map((item, i) => {
-
-                            if (item.type === "paragraph") {
-
-                                return (
-                                    <p key={i}>
-                                        {item.value}
-                                    </p>
-                                );
-
-                            }
-
-                            if (item.type === "image") {
-
-                                return (
-                                    <img
-                                        key={i}
-                                        className="ch-image"
-                                        src={item.src}
-                                        alt=""
-                                    />
-                                );
-
-                            }
-
-                            return null;
-
-                        })
+                        chapter.content
+                            .split("\n\n")
+                            .map((paragraph, i) => (
+                                <p key={i}>{paragraph}</p>
+                            ))
 
                     ) : (
 
                         <p className="ch-placeholder">
-                            This chapter hasn't been written yet.
+                            This chapter hasn't been written into the site yet.
                         </p>
 
                     )}
@@ -168,16 +157,16 @@ export default function Chapter() {
 
                     <div className="ch-nav-side">
 
-                        {previous ? (
+                        {prev ? (
 
                             <Link
                                 className="ch-nav-link"
-                                to={`/books/${book.slug}/${previous.slug}`}
+                                to={`/books/${book.slug}/${prev.slug}`}
                             >
 
                                 <span className="ch-nav-label">← Previous</span>
 
-                                <span className="ch-nav-chapter-title">{previous.title}</span>
+                                <span className="ch-nav-chapter-title">{prev.title}</span>
 
                             </Link>
 

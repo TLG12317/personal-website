@@ -84,6 +84,20 @@
 
 }
 
+.admin-error{
+
+    color:#e08787;
+
+    background:#2a1f1f;
+
+    border:1px solid #833636;
+
+    padding:16px 20px;
+
+    border-radius:10px;
+
+}
+
 .admin-books{
 
     display:grid;

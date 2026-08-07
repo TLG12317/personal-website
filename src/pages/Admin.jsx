@@ -12,6 +12,7 @@ import "./Admin.css";
 export default function Admin() {
 
     const [books, setBooks] = useState([]);
+    const [loadError, setLoadError] = useState(null);
 
     const navigate = useNavigate();
 
@@ -29,7 +30,13 @@ export default function Admin() {
     });
 
     useEffect(() => {
-        getBooks().then(setBooks);
+        setLoadError(null);
+        getBooks()
+            .then(setBooks)
+            .catch((err) => {
+                console.error(err);
+                setLoadError(err);
+            });
     }, []);
 
     async function handleSaveBook() {
@@ -161,7 +168,13 @@ export default function Admin() {
 
                 <div className="admin-books">
 
-                    {books.length === 0 && (
+                    {loadError && (
+                        <p className="admin-error">
+                            Couldn't load books — is your backend server running? ({loadError.message})
+                        </p>
+                    )}
+
+                    {!loadError && books.length === 0 && (
                         <p>No books yet.</p>
                     )}
 

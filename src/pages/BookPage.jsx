@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getBook } from "../api/books";
+import { API_URL } from "../config";
 
 import BookNavbar from "../components/Books/BookNavbar";
 
@@ -13,7 +13,13 @@ export default function BookPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getBook(slug)
+        fetch(`${API_URL}/books/${slug}`)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("Book not found");
+                }
+                return res.json();
+            })
             .then((data) => {
                 setBook(data);
                 setLoading(false);
@@ -179,8 +185,9 @@ export default function BookPage() {
                             key={chapter.number}
 
                             className="bp-chapter"
-                            
+
                             to={`/books/${book.slug}/${chapter.slug}`}
+
                         >
 
                             <span className="bp-number">
